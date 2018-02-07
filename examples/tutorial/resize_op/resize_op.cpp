@@ -36,8 +36,8 @@ class MyResizeKernel : public scanner::VideoKernel {
   // from an input table to a batch of rows of the output table. Here, we map
   // from one input column from the video, "frame", and return
   // a single column, "frame".
-  void execute(const scanner::BatchedColumns& input_columns,
-               scanner::BatchedColumns& output_columns) override {
+  void execute(const scanner::BatchedElements& input_columns,
+               scanner::BatchedElements& output_columns) override {
     auto& frame_column = input_columns[0];
     int input_count = num_rows(frame_column);
 
