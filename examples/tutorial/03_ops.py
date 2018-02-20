@@ -9,7 +9,7 @@ with Database() as db:
 
     # Scanner can take a directed acyclic graph (DAG) of operators and pass data
     # between them. Each graph has starts with data from an input table.
-    frame = db.ops.FrameInput()
+    frame = db.sources.FrameColumn()
 
     blurred_frame = db.ops.Blur(
         frame = frame,
@@ -21,7 +21,7 @@ with Database() as db:
     histogram = db.ops.Histogram(
         frame = blurred_frame)
 
-    output_op = db.ops.Output(columns=[histogram])
+    output_op = db.ops.Output(columns={'hist': histogram})
 
     job = Job(
         op_args={

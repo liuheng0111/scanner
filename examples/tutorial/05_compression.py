@@ -14,7 +14,7 @@ with Database() as db:
     # The Op DAG only sees the raw frames. For example, this table is stored
     # as compressed video.
     def make_blurred_frame():
-        frame = db.ops.FrameInput()
+        frame = db.sources.FrameColumn()
 
         blurred_frame = db.ops.Blur(
             frame = frame,
@@ -26,7 +26,7 @@ with Database() as db:
     # those frames will be compressed using video encoding. No other frame
     # type is currently compressed.
     frame, blurred_frame = make_blurred_frame()
-    output_op = db.ops.Output(columns=[blurred_frame])
+    output_op = db.ops.Output(columns={'frame': blurred_frame})
     job = Job(
         op_args={
             frame: db.table('example').column('frame'),
@@ -39,7 +39,7 @@ with Database() as db:
     frame, blurred_frame = make_blurred_frame()
     # The compression parameters can be controlled by annotating the column
     low_quality_frame = blurred_frame.compress_video(quality = 35)
-    output_op = db.ops.Output(columns=[low_quality_frame])
+    output_op = db.ops.Output(columns={'frame': low_quality_frame})
     job = Job(
         op_args={
             frame: db.table('example').column('frame'),
@@ -54,7 +54,7 @@ with Database() as db:
     frame, blurred_frame = make_blurred_frame()
     # The compression parameters can be controlled by annotating the column
     lossless_frame = blurred_frame.lossless()
-    output_op = db.ops.Output(columns=[lossless_frame])
+    output_op = db.ops.Output(columns={'frame': lossless_frame})
     job = Job(
         op_args={
             frame: db.table('example').column('frame'),

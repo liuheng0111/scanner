@@ -23,9 +23,9 @@ with Database() as db:
     # You can retrieve table objects off the collection.
     table = output_collection.tables(0)
 
-    frame = db.ops.FrameInput()
+    frame = db.sources.FrameColumn()
     hist = db.ops.Histogram(frame=frame)
-    output_op = db.ops.Output(columns=[hist])
+    output_op = db.ops.Output(columns={'hist': hist})
     # You can use a collection to enumerate tables
     jobs = []
     for table in input_collection.tables():
